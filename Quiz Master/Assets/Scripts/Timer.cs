@@ -3,11 +3,17 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    public bool isAnsweringQuestion = false;
-    public float imageFillFraction;
+    public bool IsAnsweringQuestion = false;
+    public float ImageFillFraction;
+    public bool LoadNextQuestion = true;
     [SerializeField] private float questionTimer = 15;
     [SerializeField] private int answerTimer = 5;
     private float timerValue;
+
+    public void CancelTimer()
+    {
+        timerValue = 0;
+    }
 
     void Update()
     {
@@ -18,18 +24,19 @@ public class Timer : MonoBehaviour
     {
         timerValue -= Time.deltaTime;
 
-        var divider = isAnsweringQuestion
+        var divider = IsAnsweringQuestion
             ? questionTimer
             : answerTimer;
-        imageFillFraction = timerValue / divider;
+        ImageFillFraction = timerValue / divider;
 
         if (timerValue <= 0)
         {
-            isAnsweringQuestion = isAnsweringQuestion == false;
-            timerValue = isAnsweringQuestion
+            IsAnsweringQuestion = IsAnsweringQuestion == false;
+            timerValue = IsAnsweringQuestion
                 ? questionTimer
                 : answerTimer;
+            LoadNextQuestion = false;
         }
-        Debug.Log($"Answering Question: {isAnsweringQuestion} | Timer Value : {timerValue} | Image Fill Fraction : {imageFillFraction}");
+        Debug.Log($"Answering Question: {IsAnsweringQuestion} | Timer Value : {timerValue} | Image Fill Fraction : {ImageFillFraction} | Load Next Question : {LoadNextQuestion}");
     }
 }
